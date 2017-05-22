@@ -42,5 +42,7 @@
 	#define CONN_INPRROGRESS	EINPROGRESS
 #endif
 
+	const WORD EVENT_S2C_LS = 1;
+
 
 #endif //_SOCKET_DEF_H_

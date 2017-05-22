@@ -3,7 +3,7 @@
 
 #include "../CTypeDef.h"
 
-#define DEFAULT_PACKET_MAX_SIZE 64*1024
+const int DEFAULT_PACKET_MAX_SIZE = 64 * 1024;
 
 class CMemPacket 
 {
@@ -16,7 +16,7 @@ class CMemPacket
 public:
 	CMemPacket();
 	CMemPacket(int _size);
-	CMemPacket(char* _data);
+	//CMemPacket(char* _data);
 
 	void BeginRead();
 	void BeginWrite();
@@ -25,7 +25,7 @@ public:
 	bool WriteData(const void *_data, int len);
 
 	bool Read(bool* v);
-	//bool Read(char* v);
+	bool Read(char** v);
 	bool Read(BYTE* v)				{ return ReadData(v, sizeof(BYTE)); }
 	bool Read(char* v)				{ return ReadData(v, sizeof(char)); }
 	bool Read(short* v)				{ return ReadData(v, sizeof(short)); }
@@ -36,7 +36,7 @@ public:
 	bool Read(UINT64* v)			{ return ReadData(v, sizeof(UINT64)); }
 
 	bool Write(bool v);
-	//bool Write(char* v);
+	bool Write(const char* v);
 	bool Write(BYTE v)				{ return WriteData(&v, sizeof(BYTE)); }
 	bool Write(char v)				{ return WriteData(&v, sizeof(char)); }
 	bool Write(short v)				{ return WriteData(&v, sizeof(short)); }
@@ -46,7 +46,9 @@ public:
 	bool Write(INT64 v)				{ return WriteData(&v, sizeof(INT64)); }
 	bool Write(UINT64 v)			{ return WriteData(&v, sizeof(UINT64)); }
 
-	const char* GetData()			{ return data; }
+	bool SetData(const char* _data);
+	const char* GetData() const		{ return data; }
+	const int GetCurByte() const    { return curByte; }
 
 private:
 	bool _setErr();

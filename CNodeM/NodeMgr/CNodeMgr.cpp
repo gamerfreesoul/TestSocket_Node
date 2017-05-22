@@ -1,4 +1,5 @@
 #include "CNodeMgr.h"
+#include "../../Shared/CMemPacket/CMemPakcet.h"
 
 CSocketClient::CSocketClient()
 {
@@ -210,20 +211,35 @@ bool CNodeMgr::Process()
 		ret = OnRecv(sClient.nConnSocket, buff, 1024);
 		if (ret > 0)
 		{
-			printf("ip %s buff %s\n", inet_ntoa(sClient.clientAddr.sin_addr), buff);
-			for (auto clientit = clientSocketList.begin(); clientit != clientSocketList.end(); ++clientit)
+			if (strcmp(buff, "\r") != 0)
 			{
-				CSocketClient clientSock = *clientit;
-				ret = OnSend(clientSock.nConnSocket, buff, strlen(buff));
-				if (ret == SOCKET_ERROR)
+				printf("ip %s buff %s\n", inet_ntoa(sClient.clientAddr.sin_addr), buff);
+				CMemPacket pPkt;
+				pPkt.BeginWrite();
+				if (strcmp(buff, "ls") == 0)
 				{
-					clientSock.OnClose();
-					clientdel.push_back(clientit);
+					pPkt.Write(EVENT_S2C_LS);
+					pPkt.Write("aaaaaaa");
+					pPkt.Write("bbbbbbb");
+					pPkt.Write("ccccccc");
+				}
+				for (auto clientit = clientSocketList.begin(); clientit != clientSocketList.end(); ++clientit)
+				{
+					CSocketClient clientSock = *clientit;
+					ret = OnSend(clientSock.nConnSocket, pPkt.GetData(), pPkt.GetCurByte());
+					if (ret == SOCKET_ERROR)
+					{
+						clientSock.OnClose();
+						clientdel.push_back(clientit);
+					}
+				}
+
+				if (strcmp(buff, "exit") == 0)
+				{
+					sClient.OnClose();
+					teldel.push_back(it);
 				}
 			}
-
-			if (strcmp(buff, "exit\r\n")==0)
-				bResult = false;
 		}
 		else if (ret == SOCKET_ERROR)
 		{

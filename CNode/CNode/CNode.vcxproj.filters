@@ -16,6 +16,12 @@
     <Filter Include="CNodeClinet">
       <UniqueIdentifier>{10e83ea6-b84e-46d4-9b36-291ead065a1a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shared">
+      <UniqueIdentifier>{18b57575-07db-4f03-9b6c-3f80ce2ff314}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shared\CMemPacket">
+      <UniqueIdentifier>{decc2075-3acf-4d31-baf4-8d8e72f52c06}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -24,10 +30,22 @@
     <ClCompile Include="..\CNodeClient\CNodeClient.cpp">
       <Filter>CNodeClinet</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Shared\CMemPacket\CMemPacket.cpp">
+      <Filter>Shared\CMemPacket</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\CNodeClient\CNodeClient.h">
       <Filter>CNodeClinet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\CTypeDef.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\socketDef.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\CMemPacket\CMemPakcet.h">
+      <Filter>Shared\CMemPacket</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

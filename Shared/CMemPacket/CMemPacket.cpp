@@ -21,14 +21,24 @@ CMemPacket::CMemPacket(int _size)
 	data = new char[_size];
 }
 
-CMemPacket::CMemPacket(char* _data)
-{
-	bIsErr = false;
-	opType = OP_READ;
-	curByte = 0;
-	maxByte = strlen(_data);
+//CMemPacket::CMemPacket(char* _data)
+//{
+//	bIsErr = false;
+//	opType = OP_READ;
+//	curByte = 0;
+//	maxByte = strlen(_data);
+//	data = new char[maxByte];
+//
+//	memcpy(data, _data, maxByte);
+//}
 
-	data = _data;
+bool CMemPacket::SetData(const char* _data)
+{
+	if (!_data)
+		return _setErr();
+
+	memcpy(data, _data, maxByte);
+	return true;
 }
 
 void CMemPacket::BeginRead()
@@ -58,8 +68,9 @@ bool CMemPacket::ReadData(void *_data, int len)
 
 	if (len > 0)
 	{
-		memcpy(_data, data+len, len);
+		memcpy(_data, data, len);
 		curByte += len;
+		data += len;
 	}
 	return true;
 }
@@ -77,7 +88,7 @@ bool CMemPacket::WriteData(const void *_data, int len)
 
 	if (len > 0)
 	{
-		memcpy(data+len, _data, len);
+		memcpy(data+curByte, _data, len);
 		curByte += len;
 	}
 	return true;
@@ -98,14 +109,21 @@ bool CMemPacket::Write(bool v)
 	return Write(_v);
 }
 
-//bool CMemPacket::Write(char* v)
-//{
-//	if (!v)
-//		return _setErr();
-//
-//	int len = strlen(v);
-//	return WriteData(v, len);
-//}
+bool CMemPacket::Read(char** v)
+{
+	*v = data;
+	curByte += strlen(data) + 1;
+	data += strlen(data) + 1;
+
+	return true;
+}
+
+bool CMemPacket::Write(const char* v)
+{
+	if (!v)
+		return _setErr();
+	return WriteData((const void*)v, strlen(v)+1);
+}
 
 bool CMemPacket::_setErr()
 {

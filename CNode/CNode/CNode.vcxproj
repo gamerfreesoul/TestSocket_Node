@@ -119,10 +119,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Shared\CMemPacket\CMemPacket.cpp" />
     <ClCompile Include="..\CNodeClient\CNodeClient.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Shared\CMemPacket\CMemPakcet.h" />
+    <ClInclude Include="..\..\Shared\CTypeDef.h" />
+    <ClInclude Include="..\..\Shared\socketDef.h" />
     <ClInclude Include="..\CNodeClient\CNodeClient.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

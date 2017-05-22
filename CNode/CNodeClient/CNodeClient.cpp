@@ -1,6 +1,7 @@
 #include "CNodeClient.h"
 #include "stdio.h"
 #include "../../Shared/socketDef.h"
+#include "../../Shared/CMemPacket/CMemPakcet.h"
 
 #define SERVER_PORT 9503
 
@@ -146,7 +147,18 @@ bool CNodeClient::Process()
 		int ret = OnRecv(nClientSocket, buff, 1024);
 		if (ret > 0)
 		{
-			printf("%s\n", buff);
+			CMemPacket pPkt(ret);
+			pPkt.SetData(buff);
+			pPkt.BeginRead();
+			WORD wEventId = 0;
+			char* temp = NULL;
+			pPkt.Read(&wEventId);
+			pPkt.Read(&temp);
+			printf("%d %s\n", wEventId, temp);
+			pPkt.Read(&temp);
+			printf("%d %s\n", wEventId, temp);
+			pPkt.Read(&temp);
+			printf("%d %s\n", wEventId, temp);
 		}
 		else if (ret == SOCKET_ERROR)
 		{
