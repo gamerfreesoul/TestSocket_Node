@@ -16,13 +16,15 @@ class CMemPacket
 public:
 	CMemPacket();
 	CMemPacket(int _size);
-	//CMemPacket(char* _data);
 
 	void BeginRead();
 	void BeginWrite();
 
 	bool ReadData(void *_data, int len);
 	bool WriteData(const void *_data, int len);
+
+	bool ReadBit(DWORD v, int len);
+	bool WriteBit(DWORD v, int len);
 
 	bool Read(bool* v);
 	bool Read(char** v);
@@ -46,7 +48,7 @@ public:
 	bool Write(INT64 v)				{ return WriteData(&v, sizeof(INT64)); }
 	bool Write(UINT64 v)			{ return WriteData(&v, sizeof(UINT64)); }
 
-	bool SetData(const char* _data);
+	bool SetData(const char* _data, int _size);
 	const char* GetData() const		{ return data; }
 	const int GetCurByte() const    { return curByte; }
 
@@ -56,9 +58,11 @@ private:
 	int opType;
 	int curByte;
 	int maxByte;
+	int bitPos;
 	bool bIsErr;
 
 	char* data;
+	char* bitData;
 };
 
 #endif //_MEM_PACKET_H_

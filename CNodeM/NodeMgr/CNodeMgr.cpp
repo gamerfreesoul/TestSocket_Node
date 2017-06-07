@@ -241,7 +241,15 @@ bool CNodeMgr::Process()
 				}
 			}
 		}
-		else if (ret == SOCKET_ERROR)
+		else if (ret == 0)
+		{
+			if (GETERROR == 0)
+			{
+				sClient.OnClose();
+				teldel.push_back(it);
+			}
+		}
+		else if (ret < 0)
 		{
 			sClient.OnClose();
 			teldel.push_back(it);
